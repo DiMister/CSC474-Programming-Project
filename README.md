@@ -28,16 +28,7 @@ python .\server.py --host 0.0.0.0 --port 12345
 python .\client.py --host 127.0.0.1 --port 12345
 ```
 
-
 Type commands at the prompt, for example:
 - `LIST`
 - `READ myfile.txt`
 - `WRITE myfile.txt`
-
-Security
-- This implementation is intentionally minimal and does not implement authentication or access controls. Do NOT expose it on untrusted networks without adding authentication and transport security.
-
-Next steps you might want
-- Add simple token-based authentication.
-- Add TLS for the TCP listener.
-- Improve protocol framing for large concurrent writes.
