@@ -26,7 +26,8 @@ async def handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
 
             if cmd == 'LIST':
                 files = os.listdir(DATA_DIR)
-                payload = '\n'.join(files) + '\n'
+                # Prefix the list with a count so clients can read the full listing
+                payload = f"LIST {len(files)}\n" + '\n'.join(files) + '\n'
                 writer.write(payload.encode())
                 await writer.drain()
 

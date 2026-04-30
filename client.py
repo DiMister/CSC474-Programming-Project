@@ -42,9 +42,20 @@ async def tcp_client(host, port):
                 print(resp.decode().strip())
             else:
                 await send_cmd(cmd)
-                # read a line response (LIST or ERROR or LEN ...)
+                # read a line response (LIST header, ERROR, or LEN ...)
                 resp = await reader.readuntil(b"\n")
                 text = resp.decode(errors='replace')
+                if text.startswith('LIST '):
+                    # protocol: "LIST <count>\n" followed by <count> filename lines
+                    try:
+                        count = int(text.split()[1])
+                    except Exception:
+                        print(text.strip())
+                        continue
+                    for _ in range(count):
+                        line = await reader.readuntil(b"\n")
+                        print(line.decode().strip())
+                    continue
                 if text.startswith('LEN '):
                     # read length and then raw data
                     try:
